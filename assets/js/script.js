@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initTilt();
     initNavbar();
     initTechStreams();
+    initLightbox();
 });
 
 /* --- 1. Particle Network Background --- */
@@ -268,5 +269,52 @@ function initTechStreams() {
         track.style.animationDuration = `${duration}s`;
         track.style.animationTimingFunction = 'linear';
         track.style.animationIterationCount = 'infinite';
+    });
+}
+
+/* --- 7. Lightbox Modal Logic --- */
+function initLightbox() {
+    const modal = document.getElementById('lightbox-modal');
+    const modalImg = document.getElementById('lightbox-img');
+    const captionText = document.getElementById('lightbox-caption');
+    const closeBtn = document.querySelector('.close-lightbox');
+    
+    // Select all images inside photo-grid-mini
+    const images = document.querySelectorAll('.photo-grid-mini img');
+
+    if (!modal || !modalImg) return;
+
+    images.forEach(img => {
+        img.addEventListener('click', function() {
+            modal.classList.add('active');
+            modalImg.src = this.src;
+            
+            // Optional: Use alt text or nearest h3 as caption
+            const parentCard = this.closest('.card');
+            const title = parentCard ? parentCard.querySelector('h3').innerText : '';
+            const date = parentCard ? parentCard.querySelector('.date').innerText : '';
+            captionText.innerText = `${title} (${date})`;
+        });
+    });
+
+    // Close when clicking 'x'
+    if (closeBtn) {
+        closeBtn.addEventListener('click', () => {
+            modal.classList.remove('active');
+        });
+    }
+
+    // Close when clicking outside the image
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            modal.classList.remove('active');
+        }
+    });
+
+    // Close on Escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal.classList.contains('active')) {
+            modal.classList.remove('active');
+        }
     });
 }
