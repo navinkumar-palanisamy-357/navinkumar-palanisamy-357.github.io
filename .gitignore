@@ -21,9 +21,3 @@ build/
 
 # Documents
 *.pdf
-
-# Assets (Images)
-assets/images/
-*.jpg
-*.png
-*.jpeg
