@@ -10,53 +10,186 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
+        /* Gallery Container */
         .gallery-container {
             padding: 2rem 5%;
             max-width: 1400px;
             margin: 0 auto;
+            min-height: 100vh;
         }
         
+        /* Header Styles */
         .gallery-header {
             text-align: center;
             margin-bottom: 3rem;
+            position: relative;
+            z-index: 10;
         }
         
         .gallery-header h1 {
             font-size: 2.5rem;
             margin-bottom: 1rem;
-            color: var(--text-color);
+            color: var(--text-main);
+            font-family: var(--font-code);
         }
         
         .gallery-header p {
-            color: var(--text-secondary);
+            color: var(--text-muted);
             max-width: 700px;
             margin: 0 auto;
             line-height: 1.6;
         }
         
-        .masonry-grid {
-            display: grid;
-            grid-gap: 1.5rem;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-        }
-        
-        .masonry-item {
-            width: 100%;
-            height: 400px; /* Fixed height for all items */
-            border-radius: 8px;
-            overflow: hidden;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            background: var(--card-bg);
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            margin-bottom: 2rem;
+            color: var(--accent-cyan);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            font-family: var(--font-code);
             position: relative;
+            z-index: 10;
         }
         
-        .masonry-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        .back-button:hover {
+            color: var(--accent-purple);
+            text-shadow: 0 0 10px var(--accent-cyan);
         }
         
-        .masonry-item img {
+        .back-button i {
+            margin-right: 8px;
+        }
+        
+        /* ===== LOCATION SECTION ===== */
+        .location-section {
+            margin-bottom: 6rem;
+            padding: 2rem 0;
+        }
+        
+        .location-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .location-header h2 {
+            font-size: 2rem;
+            color: var(--text-main);
+            font-family: var(--font-code);
+            margin-bottom: 0.5rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .location-header h2 i {
+            color: var(--accent-cyan);
+            font-size: 1.5rem;
+        }
+        
+        .location-header .location-meta {
+            color: var(--text-muted);
+            font-family: var(--font-code);
+            font-size: 0.9rem;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 0.5rem;
+        }
+        
+        .location-header .location-meta span {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .location-header .location-meta i {
+            color: var(--accent-cyan);
+        }
+        
+        .location-divider {
+            width: 100px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent-cyan), transparent);
+            margin: 1.5rem auto;
+        }
+        
+        /* ===== PERSPECTIVE DECK ===== */
+        .perspective-deck-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            perspective: 1200px;
+            padding: 2rem 0;
+            position: relative;
+            min-height: 450px;
+        }
+        
+        .perspective-deck {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+            justify-content: center;
+            transform-style: preserve-3d;
+            transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        
+        /* Individual card */
+        .deck-card {
+            position: relative;
+            width: 280px;
+            height: 380px;
+            border-radius: 16px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            transform-style: preserve-3d;
+            background: var(--bg-secondary);
+            box-shadow: 
+                0 10px 40px rgba(0, 0, 0, 0.4),
+                0 0 0 1px rgba(255, 255, 255, 0.05);
+        }
+        
+        /* Default state - side cards angled */
+        .deck-card.position-left {
+            transform: rotateY(25deg) translateZ(-50px) scale(0.9);
+            opacity: 0.7;
+        }
+        
+        .deck-card.position-center {
+            transform: rotateY(0deg) translateZ(30px) scale(1.05);
+            z-index: 10;
+        }
+        
+        .deck-card.position-right {
+            transform: rotateY(-25deg) translateZ(-50px) scale(0.9);
+            opacity: 0.7;
+        }
+        
+        /* Active/focused card - zoomed in */
+        .deck-card.active {
+            transform: rotateY(0deg) translateZ(80px) scale(1.15) !important;
+            z-index: 20 !important;
+            opacity: 1 !important;
+            box-shadow: 
+                0 30px 100px rgba(0, 0, 0, 0.6),
+                0 0 60px rgba(16, 185, 129, 0.3),
+                0 0 0 3px var(--accent-cyan);
+        }
+        
+        /* Hover effects */
+        .deck-card:hover:not(.active) {
+            transform: rotateY(0deg) translateZ(60px) scale(1.08) !important;
+            z-index: 15 !important;
+            opacity: 1 !important;
+            box-shadow: 
+                0 25px 80px rgba(0, 0, 0, 0.5),
+                0 0 50px rgba(16, 185, 129, 0.25),
+                0 0 0 2px var(--accent-cyan);
+        }
+        
+        .deck-card img {
             width: 100%;
             height: 100%;
             object-fit: cover;
@@ -64,57 +197,247 @@
             transition: transform 0.5s ease;
         }
         
-        .masonry-item:hover img {
-            transform: scale(1.03);
+        .deck-card:hover img,
+        .deck-card.active img {
+            transform: scale(1.05);
         }
         
+        /* Photo info overlay */
         .photo-info {
             position: absolute;
             bottom: 0;
             left: 0;
             right: 0;
-            padding: 1rem;
+            padding: 1.5rem;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.6) 60%, transparent 100%);
             color: white;
-            background: linear-gradient(transparent, rgba(0,0,0,0.7));
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.4s ease;
+        }
+        
+        .deck-card:hover .photo-info,
+        .deck-card.active .photo-info {
+            opacity: 1;
+            transform: translateY(0);
         }
         
         .photo-info h3 {
             margin: 0 0 0.5rem 0;
             font-size: 1.1rem;
+            font-family: var(--font-code);
+            color: var(--accent-cyan);
         }
         
         .photo-meta {
             display: flex;
             justify-content: space-between;
-            color: rgba(255,255,255,0.9);
-            font-size: 0.85rem;
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.8);
+            font-family: var(--font-code);
         }
         
-        .back-button {
-            display: inline-flex;
+        .photo-meta i {
+            margin-right: 4px;
+            color: var(--accent-cyan);
+        }
+        
+        /* Card shine effect */
+        .deck-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 60%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.15),
+                transparent
+            );
+            transition: left 0.6s ease;
+            pointer-events: none;
+            z-index: 2;
+        }
+        
+        .deck-card:hover::before,
+        .deck-card.active::before {
+            left: 150%;
+        }
+        
+        /* Navigation arrows */
+        .nav-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(16, 185, 129, 0.1);
+            border: 2px solid var(--accent-cyan);
+            color: var(--accent-cyan);
+            cursor: pointer;
+            display: flex;
             align-items: center;
-            margin-bottom: 2rem;
-            color: var(--accent-color);
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.3s ease;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            z-index: 30;
+            backdrop-filter: blur(5px);
         }
         
-        .back-button:hover {
-            color: var(--accent-hover);
+        .nav-arrow:hover {
+            background: var(--accent-cyan);
+            color: var(--bg-main);
+            box-shadow: 0 0 30px rgba(16, 185, 129, 0.5);
+            transform: translateY(-50%) scale(1.1);
         }
         
-        .back-button i {
-            margin-right: 8px;
+        .nav-arrow:active {
+            transform: translateY(-50%) scale(0.95);
         }
         
-        @media (max-width: 768px) {
-            .masonry-grid {
-                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        .nav-arrow.prev {
+            left: 20px;
+        }
+        
+        .nav-arrow.next {
+            right: 20px;
+        }
+        
+        .nav-arrow:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+        
+        .nav-arrow:disabled:hover {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--accent-cyan);
+            box-shadow: none;
+            transform: translateY(-50%);
+        }
+        
+        /* Navigation dots */
+        .deck-nav {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 1.5rem;
+        }
+        
+        .deck-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(16, 185, 129, 0.2);
+            border: 2px solid var(--accent-cyan);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .deck-dot:hover {
+            background: rgba(16, 185, 129, 0.4);
+            transform: scale(1.2);
+        }
+        
+        .deck-dot.active {
+            background: var(--accent-cyan);
+            box-shadow: 0 0 15px var(--accent-cyan);
+        }
+        
+        /* Responsive */
+        @media (max-width: 1100px) {
+            .perspective-deck {
+                gap: 20px;
+            }
+            
+            .deck-card {
+                width: 240px;
+                height: 320px;
+            }
+            
+            .nav-arrow {
+                width: 44px;
+                height: 44px;
+                font-size: 1rem;
+            }
+            
+            .nav-arrow.prev {
+                left: 10px;
+            }
+            
+            .nav-arrow.next {
+                right: 10px;
+            }
+        }
+        
+        @media (max-width: 850px) {
+            .perspective-deck {
+                flex-direction: column;
+                gap: 25px;
+            }
+            
+            .perspective-deck-wrapper {
+                min-height: auto;
+                padding: 1rem 0;
+            }
+            
+            .deck-card {
+                width: 300px;
+                height: 400px;
+            }
+            
+            .deck-card.position-left,
+            .deck-card.position-center,
+            .deck-card.position-right {
+                transform: none;
+                opacity: 1;
+            }
+            
+            .deck-card.active {
+                transform: scale(1.02) !important;
+                box-shadow: 
+                    0 15px 50px rgba(0, 0, 0, 0.5),
+                    0 0 30px rgba(16, 185, 129, 0.2),
+                    0 0 0 2px var(--accent-cyan);
+            }
+            
+            .deck-card:hover:not(.active) {
+                transform: scale(1.01) !important;
+            }
+            
+            .photo-info {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            
+            .nav-arrow {
+                display: none;
             }
             
             .gallery-header h1 {
-                font-size: 2rem;
+                font-size: 1.8rem;
+            }
+            
+            .location-header h2 {
+                font-size: 1.5rem;
+            }
+            
+            .location-header .location-meta {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .location-section {
+                margin-bottom: 4rem;
+            }
+        }
+        
+        @media (max-width: 400px) {
+            .deck-card {
+                width: 280px;
+                height: 370px;
             }
         }
     </style>
@@ -155,40 +478,8 @@
                     <p>Capturing moments, one frame at a time. Through my lens, I explore the beauty in the ordinary and the extraordinary.</p>
                 </div>
                 
-                <div class="masonry-grid" id="photo-gallery">
-                    <!-- Photo 1 -->
-                    <div class="masonry-item">
-                        <img src="assets/photography/lens1.jpeg" alt="Varenna, Italy">
-                        <div class="photo-info">
-                            <div class="photo-meta">
-                                <span>Varenna, Italy</span>
-                                <span>Nov 2025</span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Photo 2 -->
-                    <div class="masonry-item">
-                        <img src="assets/photography/lens2.jpeg" alt="Varenna, Italy">
-                        <div class="photo-info">
-                            <div class="photo-meta">
-                                <span>Varenna, Italy</span>
-                                <span>Nov 2025</span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Photo 3 -->
-                    <div class="masonry-item">
-                        <img src="assets/photography/lens3.jpeg" alt="Varenna, Italy">
-                        <div class="photo-info">
-                            <div class="photo-meta">
-                                <span>Algarve, Portugal</span>
-                                <span>Jul 2023</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <!-- Location sections will be generated by JavaScript -->
+                <div id="gallery-sections"></div>
             </div>
         </main>
 
@@ -206,79 +497,266 @@
 
     <script src="assets/js/script.js"></script>
     <script>
-        // Initialize lightbox for gallery images
         document.addEventListener('DOMContentLoaded', function() {
-            const gallery = document.getElementById('photo-gallery');
+            const gallerySections = document.getElementById('gallery-sections');
             const modal = document.getElementById('lightbox-modal');
             const modalImg = document.getElementById('lightbox-img');
             const captionText = document.getElementById('lightbox-caption');
             const closeBtn = document.querySelector('.close-lightbox');
             
-            // Open lightbox when clicking on gallery images
-            gallery.addEventListener('click', function(e) {
-                const img = e.target.closest('.masonry-item img');
-                if (!img) return;
+            // Organize images by location
+            // Each location has: name, country, date range, GPS coordinates (optional), and images
+            const locations = [
+                {
+                    id: 'italy',
+                    name: 'Lake Como',
+                    country: 'Italy',
+                    date: 'Nov 2025',
+                    gps: '46.0103° N, 9.2855° E',
+                    images: [
+                        { src: 'assets/photography/lens1.jpeg', alt: 'Lake Como View' },
+                        { src: 'assets/photography/lens2.jpeg', alt: 'Saturated Vistas' },
+                        { src: 'assets/photography/lens3.jpeg', alt: 'Sunset over the Lake' },
+                    ]
+                },
+                {
+                    id: 'paris',
+                    name: 'La Rochelle',
+                    country: 'France',
+                    date: 'August 2025',
+                    gps: '46.1603° N, 1.1511° E',
+                    images: [
+                        { src: 'assets/photography/france-1.jpeg', alt: 'Solitary Voyager' },
+                        { src: 'assets/photography/france-2.jpeg', alt: 'La Rochelle View' },
+                        { src: 'assets/photography/france-3.jpeg', alt: 'Castle on water' },
+                    ]
+                },
+            ];
+            
+            // Track state for each location's deck
+            const deckStates = {};
+            
+            // Create a section for each location
+            function createGallery() {
+                gallerySections.innerHTML = '';
                 
-                modalImg.src = img.src;
-                captionText.textContent = img.alt;
+                locations.forEach(location => {
+                    // Initialize state for this location
+                    deckStates[location.id] = {
+                        currentIndex: Math.floor(location.images.length / 2),
+                        cards: [],
+                        dots: []
+                    };
+                    
+                    // Create section
+                    const section = document.createElement('section');
+                    section.className = 'location-section';
+                    section.id = `location-${location.id}`;
+                    
+                    section.innerHTML = `
+                        <div class="location-header">
+                            <h2><i class="fas fa-map-marker-alt"></i> ${location.name}, ${location.country}</h2>
+                            <div class="location-divider"></div>
+                            <div class="location-meta">
+                                <span><i class="fas fa-calendar"></i> ${location.date}</span>
+                                ${location.gps ? `<span><i class="fas fa-globe"></i> ${location.gps}</span>` : ''}
+                            </div>
+                        </div>
+                        
+                        <div class="perspective-deck-wrapper">
+                            <button class="nav-arrow prev" data-location="${location.id}" title="Previous">
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                            
+                            <div class="perspective-deck" id="deck-${location.id}">
+                                <!-- Cards will be added here -->
+                            </div>
+                            
+                            <button class="nav-arrow next" data-location="${location.id}" title="Next">
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                        </div>
+                        
+                        <div class="deck-nav" id="nav-${location.id}">
+                            <!-- Dots will be added here -->
+                        </div>
+                    `;
+                    
+                    gallerySections.appendChild(section);
+                    
+                    // Get deck and nav elements
+                    const deck = document.getElementById(`deck-${location.id}`);
+                    const nav = document.getElementById(`nav-${location.id}`);
+                    const state = deckStates[location.id];
+                    
+                    // Create cards for this location
+                    location.images.forEach((img, index) => {
+                        const card = document.createElement('div');
+                        card.className = 'deck-card';
+                        card.dataset.index = index;
+                        card.dataset.location = location.id;
+                        
+                        card.innerHTML = `
+                            <img src="${img.src}" alt="${img.alt}" loading="lazy">
+                            <div class="photo-info">
+                                <h3>${img.alt}</h3>
+                                <div class="photo-meta">
+                                    <span><i class="fas fa-map-marker-alt"></i> ${location.name}</span>
+                                    <span><i class="fas fa-calendar"></i> ${location.date}</span>
+                                </div>
+                            </div>
+                        `;
+                        
+                        // Click handler
+                        card.addEventListener('click', () => {
+                            if (card.classList.contains('active')) {
+                                openLightbox(img.src, `${img.alt} • ${location.name}, ${location.country}`, location.id, index);
+                            } else {
+                                selectCard(location.id, index);
+                            }
+                        });
+                        
+                        deck.appendChild(card);
+                        state.cards.push(card);
+                        
+                        // Create dot
+                        const dot = document.createElement('div');
+                        dot.className = 'deck-dot';
+                        dot.addEventListener('click', () => selectCard(location.id, index));
+                        nav.appendChild(dot);
+                        state.dots.push(dot);
+                    });
+                    
+                    // Set initial positions
+                    updateCardPositions(location.id);
+                    
+                    // Add arrow event listeners
+                    const prevBtn = section.querySelector('.nav-arrow.prev');
+                    const nextBtn = section.querySelector('.nav-arrow.next');
+                    
+                    prevBtn.addEventListener('click', () => goToPrev(location.id));
+                    nextBtn.addEventListener('click', () => goToNext(location.id));
+                });
+            }
+            
+            // Update card positions for a specific location
+            function updateCardPositions(locationId) {
+                const state = deckStates[locationId];
+                const location = locations.find(l => l.id === locationId);
                 
-                // Show modal with animation
+                state.cards.forEach((card, index) => {
+                    card.classList.remove('position-left', 'position-center', 'position-right', 'active');
+                    state.dots[index].classList.remove('active');
+                    
+                    if (index < state.currentIndex) {
+                        card.classList.add('position-left');
+                    } else if (index === state.currentIndex) {
+                        card.classList.add('position-center', 'active');
+                        state.dots[index].classList.add('active');
+                    } else {
+                        card.classList.add('position-right');
+                    }
+                });
+                
+                // Update arrow button states
+                const section = document.getElementById(`location-${locationId}`);
+                const prevBtn = section.querySelector('.nav-arrow.prev');
+                const nextBtn = section.querySelector('.nav-arrow.next');
+                
+                prevBtn.disabled = state.currentIndex === 0;
+                nextBtn.disabled = state.currentIndex === location.images.length - 1;
+            }
+            
+            // Select a card
+            function selectCard(locationId, index) {
+                deckStates[locationId].currentIndex = index;
+                updateCardPositions(locationId);
+            }
+            
+            // Navigation
+            function goToPrev(locationId) {
+                const state = deckStates[locationId];
+                if (state.currentIndex > 0) {
+                    state.currentIndex--;
+                    updateCardPositions(locationId);
+                }
+            }
+            
+            function goToNext(locationId) {
+                const state = deckStates[locationId];
+                const location = locations.find(l => l.id === locationId);
+                if (state.currentIndex < location.images.length - 1) {
+                    state.currentIndex++;
+                    updateCardPositions(locationId);
+                }
+            }
+            
+            // Lightbox
+            let currentLightboxLocation = null;
+            let currentLightboxIndex = 0;
+            
+            function openLightbox(imgSrc, caption, locationId, index) {
+                currentLightboxLocation = locationId;
+                currentLightboxIndex = index;
+                
+                modalImg.src = imgSrc;
+                captionText.textContent = caption;
                 document.body.style.overflow = 'hidden';
                 modal.style.display = 'flex';
+                
                 setTimeout(() => {
                     modal.classList.add('show');
                 }, 10);
-            });
+            }
             
-            // Close lightbox
             function closeLightbox() {
                 modal.classList.remove('show');
                 setTimeout(() => {
                     modal.style.display = 'none';
                     document.body.style.overflow = '';
+                    currentLightboxLocation = null;
                 }, 300);
+            }
+            
+            function nextLightboxImage() {
+                if (!currentLightboxLocation) return;
+                const location = locations.find(l => l.id === currentLightboxLocation);
+                currentLightboxIndex = (currentLightboxIndex + 1) % location.images.length;
+                const img = location.images[currentLightboxIndex];
+                modalImg.src = img.src;
+                captionText.textContent = `${img.alt} • ${location.name}, ${location.country}`;
+                selectCard(currentLightboxLocation, currentLightboxIndex);
+            }
+            
+            function prevLightboxImage() {
+                if (!currentLightboxLocation) return;
+                const location = locations.find(l => l.id === currentLightboxLocation);
+                currentLightboxIndex = (currentLightboxIndex - 1 + location.images.length) % location.images.length;
+                const img = location.images[currentLightboxIndex];
+                modalImg.src = img.src;
+                captionText.textContent = `${img.alt} • ${location.name}, ${location.country}`;
+                selectCard(currentLightboxLocation, currentLightboxIndex);
             }
             
             closeBtn.onclick = closeLightbox;
             
-            // Close when clicking outside the image
             modal.addEventListener('click', function(event) {
                 if (event.target === modal) {
                     closeLightbox();
                 }
             });
             
-            // Close with Escape key
-            document.addEventListener('keydown', function(event) {
-                if (event.key === 'Escape') {
-                    closeLightbox();
+            // Keyboard navigation
+            document.addEventListener('keydown', (e) => {
+                if (modal.style.display === 'flex') {
+                    if (e.key === 'Escape') closeLightbox();
+                    if (e.key === 'ArrowLeft') prevLightboxImage();
+                    if (e.key === 'ArrowRight') nextLightboxImage();
                 }
             });
-        });
-        
-        // Masonry layout adjustment
-        function resizeMasonryItem(item) {
-            const grid = document.querySelector('.masonry-grid');
-            const rowGap = parseInt(window.getComputedStyle(grid).getPropertyValue('grid-row-gap'));
-            const rowHeight = parseInt(window.getComputedStyle(grid).getPropertyValue('grid-auto-rows'));
-            const contentHeight = item.querySelector('img').height + item.querySelector('.photo-info').offsetHeight;
-            const rowSpan = Math.ceil((contentHeight + rowGap) / (rowHeight + rowGap));
-            item.style.gridRowEnd = 'span ' + rowSpan;
-        }
-        
-        function resizeAllMasonryItems() {
-            const allItems = document.querySelectorAll('.masonry-item');
-            allItems.forEach(item => {
-                resizeMasonryItem(item);
-            });
-        }
-        
-        // Wait for images to load
-        window.addEventListener('load', function() {
-            resizeAllMasonryItems();
             
-            // Recalculate on window resize
-            window.addEventListener('resize', resizeAllMasonryItems);
+            // Initialize
+            createGallery();
         });
     </script>
 </body>
