@@ -68,37 +68,279 @@ nav {
 
 .logo-tabs {
     display: flex;
-    border: 1px solid rgba(16, 185, 129, 0.2);
-    border-radius: 6px;
-    background: rgba(13, 31, 23, 0.7);
-    overflow: hidden;
+    gap: 0.5rem;
+    border: none;
+    background: transparent;
+    overflow: visible;
 }
 
 .logo-tab {
+    --primary: #10b981;
+    --primary-dark: #059669;
+    --secondary: #ff0080;
+    --bg: rgba(5, 16, 11, 0.9);
+    --clip: polygon(
+        0 0,
+        calc(100% - 8px) 0,
+        100% 8px,
+        100% 100%,
+        8px 100%,
+        0 calc(100% - 8px)
+    );
+    
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem 1rem;
     font-family: var(--font-code);
     font-size: 1rem;
     font-weight: 600;
-    padding: 0.5rem 1rem;
-    color: var(--text-muted);
-    transition: all 0.3s ease;
-    border-right: 1px solid rgba(16, 185, 129, 0.2);
     text-transform: uppercase;
     letter-spacing: 1px;
+    color: var(--text-muted);
+    background: var(--bg);
+    clip-path: var(--clip);
+    cursor: pointer;
+    text-decoration: none;
+    overflow: hidden;
+    transition: all 0.6s ease;
+    border: none;
 }
 
-.logo-tab:last-child {
-    border-right: none;
+.logo-tab::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        135deg,
+        transparent 40%,
+        rgba(16, 185, 129, 0.1) 50%,
+        transparent 60%
+    );
+    background-size: 200% 200%;
+    animation: cyber-btn-shimmer 5s infinite linear;
 }
 
+/* Tab Background */
+.logo-tab .cyber-tab__bg {
+    position: absolute;
+    inset: 2px;
+    background: linear-gradient(
+        180deg,
+        rgba(16, 185, 129, 0.05) 0%,
+        rgba(5, 16, 11, 0.95) 50%,
+        rgba(16, 185, 129, 0.1) 100%
+    );
+    clip-path: var(--clip);
+    z-index: -1;
+}
+
+/* Animated Borders */
+.logo-tab .cyber-tab__borders {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+.logo-tab .cyber-tab__borders span {
+    position: absolute;
+    background: var(--primary);
+}
+
+.logo-tab .cyber-tab__borders span:nth-child(1) {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    animation: cyber-border-top 4s infinite linear;
+    transform-origin: left;
+}
+
+.logo-tab .cyber-tab__borders span:nth-child(2) {
+    top: 0;
+    right: 0;
+    width: 2px;
+    height: 100%;
+    animation: cyber-border-right 4s infinite linear;
+    animation-delay: 1s;
+    transform-origin: top;
+}
+
+.logo-tab .cyber-tab__borders span:nth-child(3) {
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    height: 2px;
+    animation: cyber-border-bottom 4s infinite linear;
+    animation-delay: 2s;
+    transform-origin: right;
+}
+
+.logo-tab .cyber-tab__borders span:nth-child(4) {
+    bottom: 0;
+    left: 0;
+    width: 2px;
+    height: 100%;
+    animation: cyber-border-left 4s infinite linear;
+    animation-delay: 3s;
+    transform-origin: bottom;
+}
+
+/* Scanlines */
+.logo-tab .cyber-tab__scanlines {
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0, 0, 0, 0.15) 2px,
+        rgba(0, 0, 0, 0.15) 4px
+    );
+    pointer-events: none;
+    animation: cyber-scanlines 12s infinite linear;
+}
+
+/* Noise Effect */
+.logo-tab .cyber-tab__noise {
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.08'/%3E%3C/svg%3E");
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+/* Glitch Text */
+.logo-tab .cyber-tab__glitch {
+    position: relative;
+    display: inline-block;
+    z-index: 1;
+}
+
+.logo-tab .cyber-tab__glitch::before,
+.logo-tab .cyber-tab__glitch::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+}
+
+.logo-tab .cyber-tab__glitch::before {
+    color: #ff0080;
+    animation: none;
+    opacity: 0;
+}
+
+.logo-tab .cyber-tab__glitch::after {
+    color: #00ffff;
+    animation: none;
+    opacity: 0;
+}
+
+/* Hover Effects */
 .logo-tab:hover {
-    background: rgba(16, 185, 129, 0.1);
-    color: var(--accent-cyan);
+    color: var(--primary);
+    text-shadow: 
+        0 0 8px var(--primary),
+        0 0 16px var(--primary);
+    box-shadow:
+        0 0 15px rgba(16, 185, 129, 0.4),
+        inset 0 0 15px rgba(16, 185, 129, 0.1);
+}
+
+.logo-tab:hover .cyber-tab__glitch::before,
+.logo-tab:hover .cyber-tab__glitch::after {
+    animation: cyber-glitch-subtle 2s infinite;
+}
+
+.logo-tab:hover .cyber-tab__borders span {
+    animation-duration: 1s;
+    background: #fff;
+    box-shadow: 0 0 8px var(--primary);
+}
+
+.logo-tab:hover .cyber-tab__bg {
+    background: linear-gradient(
+        180deg,
+        rgba(16, 185, 129, 0.2) 0%,
+        rgba(5, 16, 11, 0.9) 50%,
+        rgba(16, 185, 129, 0.2) 100%
+    );
+}
+
+/* Active State */
+.logo-tab.active {
+    color: #fff;
+    background: linear-gradient(
+        180deg,
+        rgba(16, 185, 129, 0.3) 0%,
+        rgba(16, 185, 129, 0.5) 50%,
+        rgba(16, 185, 129, 0.3) 100%
+    );
+    text-shadow: 
+        0 0 10px var(--primary),
+        0 0 20px var(--primary),
+        0 0 40px var(--primary);
+    box-shadow:
+        0 0 20px rgba(16, 185, 129, 0.6),
+        inset 0 0 20px rgba(16, 185, 129, 0.2);
+}
+
+.logo-tab.active .cyber-tab__bg {
+    background: linear-gradient(
+        180deg,
+        rgba(16, 185, 129, 0.4) 0%,
+        rgba(16, 185, 129, 0.6) 50%,
+        rgba(16, 185, 129, 0.4) 100%
+    );
+}
+
+.logo-tab.active .cyber-tab__borders span {
+    background: #fff;
+    box-shadow: 0 0 10px var(--primary);
+    animation-duration: 2s;
+}
+
+/* Glow animation on idle */
+.logo-tab {
+    animation: cyber-tab-glow 5s infinite ease-in-out;
+}
+
+@keyframes cyber-tab-glow {
+    0%, 100% { 
+        box-shadow: 
+            0 0 3px rgba(16, 185, 129, 0.2),
+            inset 0 0 3px rgba(16, 185, 129, 0.05);
+    }
+    50% { 
+        box-shadow: 
+            0 0 12px rgba(16, 185, 129, 0.4),
+            0 0 24px rgba(16, 185, 129, 0.15),
+            inset 0 0 8px rgba(16, 185, 129, 0.08);
+    }
 }
 
 .logo-tab.active {
-    background: var(--accent-cyan);
-    color: var(--bg-main);
-    box-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
+    animation: cyber-tab-active-glow 4s infinite ease-in-out;
+}
+
+@keyframes cyber-tab-active-glow {
+    0%, 100% { 
+        box-shadow: 
+            0 0 15px rgba(16, 185, 129, 0.6),
+            0 0 30px rgba(16, 185, 129, 0.3),
+            inset 0 0 15px rgba(16, 185, 129, 0.2);
+    }
+    50% { 
+        box-shadow: 
+            0 0 25px rgba(16, 185, 129, 0.8),
+            0 0 50px rgba(16, 185, 129, 0.4),
+            inset 0 0 25px rgba(16, 185, 129, 0.3);
+    }
 }
 
 .cursor {
@@ -115,34 +357,282 @@ nav {
 
 .nav-links {
     display: flex;
-    gap: 2.5rem;
+    gap: 1.5rem;
     list-style: none;
 }
 
-.nav-links a {
+.nav-links li {
+    list-style: none;
+}
+
+/* Cyberpunk Navigation Links */
+.cyber-nav-link {
+    --primary: #10b981;
+    --primary-dark: #059669;
+    --secondary: #ff0080;
+    --bg: rgba(5, 16, 11, 0.9);
+    --clip: polygon(
+        0 0,
+        calc(100% - 6px) 0,
+        100% 6px,
+        100% 100%,
+        6px 100%,
+        0 calc(100% - 6px)
+    );
+    
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem 1.2rem;
+    font-family: var(--font-code);
     font-size: 0.95rem;
     font-weight: 500;
-    position: relative;
+    text-transform: uppercase;
+    letter-spacing: 1px;
     color: var(--text-muted);
+    background: var(--bg);
+    clip-path: var(--clip);
+    cursor: pointer;
+    text-decoration: none;
+    overflow: hidden;
+    transition: all 0.6s ease;
+    border: none;
 }
 
-.nav-links a:hover, .nav-links a.active {
-    color: var(--accent-cyan);
-}
-
-.nav-links a::after {
+.cyber-nav-link::before {
     content: '';
     position: absolute;
-    width: 0;
-    height: 2px;
-    bottom: -5px;
-    left: 0;
-    background: var(--accent-cyan);
-    transition: width 0.3s;
+    inset: 0;
+    background: linear-gradient(
+        135deg,
+        transparent 40%,
+        rgba(16, 185, 129, 0.1) 50%,
+        transparent 60%
+    );
+    background-size: 200% 200%;
+    animation: cyber-btn-shimmer 5s infinite linear;
 }
 
-.nav-links a:hover::after {
+/* Nav Link Background */
+.cyber-nav-link .cyber-nav-link__bg {
+    position: absolute;
+    inset: 2px;
+    background: linear-gradient(
+        180deg,
+        rgba(16, 185, 129, 0.05) 0%,
+        rgba(5, 16, 11, 0.95) 50%,
+        rgba(16, 185, 129, 0.1) 100%
+    );
+    clip-path: var(--clip);
+    z-index: -1;
+}
+
+/* Animated Borders */
+.cyber-nav-link .cyber-nav-link__borders {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+.cyber-nav-link .cyber-nav-link__borders span {
+    position: absolute;
+    background: var(--primary);
+}
+
+.cyber-nav-link .cyber-nav-link__borders span:nth-child(1) {
+    top: 0;
+    left: 0;
     width: 100%;
+    height: 2px;
+    animation: cyber-border-top 4s infinite linear;
+    transform-origin: left;
+}
+
+.cyber-nav-link .cyber-nav-link__borders span:nth-child(2) {
+    top: 0;
+    right: 0;
+    width: 2px;
+    height: 100%;
+    animation: cyber-border-right 4s infinite linear;
+    animation-delay: 1s;
+    transform-origin: top;
+}
+
+.cyber-nav-link .cyber-nav-link__borders span:nth-child(3) {
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    height: 2px;
+    animation: cyber-border-bottom 4s infinite linear;
+    animation-delay: 2s;
+    transform-origin: right;
+}
+
+.cyber-nav-link .cyber-nav-link__borders span:nth-child(4) {
+    bottom: 0;
+    left: 0;
+    width: 2px;
+    height: 100%;
+    animation: cyber-border-left 4s infinite linear;
+    animation-delay: 3s;
+    transform-origin: bottom;
+}
+
+/* Scanlines */
+.cyber-nav-link .cyber-nav-link__scanlines {
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0, 0, 0, 0.15) 2px,
+        rgba(0, 0, 0, 0.15) 4px
+    );
+    pointer-events: none;
+    animation: cyber-scanlines 12s infinite linear;
+}
+
+/* Noise Effect */
+.cyber-nav-link .cyber-nav-link__noise {
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.08'/%3E%3C/svg%3E");
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+/* Glitch Text */
+.cyber-nav-link .cyber-nav-link__glitch {
+    position: relative;
+    display: inline-block;
+    z-index: 1;
+}
+
+.cyber-nav-link .cyber-nav-link__glitch::before,
+.cyber-nav-link .cyber-nav-link__glitch::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+}
+
+.cyber-nav-link .cyber-nav-link__glitch::before {
+    color: #ff0080;
+    animation: none;
+    opacity: 0;
+}
+
+.cyber-nav-link .cyber-nav-link__glitch::after {
+    color: #00ffff;
+    animation: none;
+    opacity: 0;
+}
+
+/* Hover Effects */
+.cyber-nav-link:hover {
+    color: var(--primary);
+    text-shadow: 
+        0 0 8px var(--primary),
+        0 0 16px var(--primary);
+    box-shadow:
+        0 0 15px rgba(16, 185, 129, 0.4),
+        inset 0 0 15px rgba(16, 185, 129, 0.1);
+}
+
+.cyber-nav-link:hover .cyber-nav-link__glitch::before,
+.cyber-nav-link:hover .cyber-nav-link__glitch::after {
+    animation: cyber-glitch-subtle 2s infinite;
+}
+
+.cyber-nav-link:hover .cyber-nav-link__borders span {
+    animation-duration: 1s;
+    background: #fff;
+    box-shadow: 0 0 8px var(--primary);
+}
+
+.cyber-nav-link:hover .cyber-nav-link__bg {
+    background: linear-gradient(
+        180deg,
+        rgba(16, 185, 129, 0.2) 0%,
+        rgba(5, 16, 11, 0.9) 50%,
+        rgba(16, 185, 129, 0.2) 100%
+    );
+}
+
+/* Active State */
+.cyber-nav-link.active {
+    color: #fff;
+    background: linear-gradient(
+        180deg,
+        rgba(16, 185, 129, 0.3) 0%,
+        rgba(16, 185, 129, 0.5) 50%,
+        rgba(16, 185, 129, 0.3) 100%
+    );
+    text-shadow: 
+        0 0 10px var(--primary),
+        0 0 20px var(--primary),
+        0 0 40px var(--primary);
+    box-shadow:
+        0 0 20px rgba(16, 185, 129, 0.6),
+        inset 0 0 20px rgba(16, 185, 129, 0.2);
+}
+
+.cyber-nav-link.active .cyber-nav-link__bg {
+    background: linear-gradient(
+        180deg,
+        rgba(16, 185, 129, 0.4) 0%,
+        rgba(16, 185, 129, 0.6) 50%,
+        rgba(16, 185, 129, 0.4) 100%
+    );
+}
+
+.cyber-nav-link.active .cyber-nav-link__borders span {
+    background: #fff;
+    box-shadow: 0 0 10px var(--primary);
+    animation-duration: 2s;
+}
+
+/* Glow animation on idle */
+.cyber-nav-link {
+    animation: cyber-nav-glow 5s infinite ease-in-out;
+}
+
+@keyframes cyber-nav-glow {
+    0%, 100% { 
+        box-shadow: 
+            0 0 3px rgba(16, 185, 129, 0.2),
+            inset 0 0 3px rgba(16, 185, 129, 0.05);
+    }
+    50% { 
+        box-shadow: 
+            0 0 12px rgba(16, 185, 129, 0.4),
+            0 0 24px rgba(16, 185, 129, 0.15),
+            inset 0 0 8px rgba(16, 185, 129, 0.08);
+    }
+}
+
+.cyber-nav-link.active {
+    animation: cyber-nav-active-glow 4s infinite ease-in-out;
+}
+
+@keyframes cyber-nav-active-glow {
+    0%, 100% { 
+        box-shadow: 
+            0 0 15px rgba(16, 185, 129, 0.6),
+            0 0 30px rgba(16, 185, 129, 0.3),
+            inset 0 0 15px rgba(16, 185, 129, 0.2);
+    }
+    50% { 
+        box-shadow: 
+            0 0 25px rgba(16, 185, 129, 0.8),
+            0 0 50px rgba(16, 185, 129, 0.4),
+            inset 0 0 25px rgba(16, 185, 129, 0.3);
+    }
 }
 
 /* Hamburger */
@@ -275,15 +765,423 @@ nav {
 
 .hero-sub {
     max-width: 600px;
-    margin: 0 auto 2.5rem;
+    margin: 5rem auto 2.5rem;
     color: var(--text-muted);
     font-size: 1.1rem;
+}
+
+.hero-sub .no-wrap {
+    white-space: nowrap;
+}
+
+/* ========== CYBERPUNK TEXT EFFECT ========== */
+.cyber-text {
+    position: relative;
+    animation: none;
+}
+
+.cyber-text::before {
+    content: attr(data-text);
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    color: #ff0080;
+    opacity: 0;
+    animation: none;
+    clip-path: inset(0 0 0 0);
+}
+
+.cyber-text::after {
+    content: attr(data-text);
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    color: #00ffff;
+    opacity: 0;
+    animation: none;
+    clip-path: inset(0 0 0 0);
+}
+
+@keyframes cyber-text-flicker {
+    0%, 100% { opacity: 1; }
+    3% { opacity: 0.85; }
+    6% { opacity: 1; }
+    7% { opacity: 0.9; }
+    8% { opacity: 1; }
+    89% { opacity: 1; }
+    90% { opacity: 0.8; }
+    92% { opacity: 1; }
+}
+
+@keyframes cyber-text-glitch1 {
+    0%, 100% { opacity: 0; transform: translateX(0); }
+    20% { opacity: 0.4; transform: translateX(-3px); clip-path: inset(10% 0 80% 0); }
+    21% { opacity: 0; }
+    40% { opacity: 0.3; transform: translateX(2px); clip-path: inset(60% 0 20% 0); }
+    41% { opacity: 0; }
+    80% { opacity: 0.5; transform: translateX(-2px); clip-path: inset(30% 0 50% 0); }
+    81% { opacity: 0; }
+}
+
+@keyframes cyber-text-glitch2 {
+    0%, 100% { opacity: 0; transform: translateX(0); }
+    25% { opacity: 0.3; transform: translateX(3px); clip-path: inset(70% 0 10% 0); }
+    26% { opacity: 0; }
+    50% { opacity: 0.4; transform: translateX(-2px); clip-path: inset(20% 0 60% 0); }
+    51% { opacity: 0; }
+    75% { opacity: 0.3; transform: translateX(1px); clip-path: inset(50% 0 30% 0); }
+    76% { opacity: 0; }
+}
+
+/* ========== CYBERPUNK BUTTON ========== */
+.cyber-btn {
+    --primary: #10b981;
+    --primary-dark: #059669;
+    --secondary: #ff0080;
+    --bg: rgba(5, 16, 11, 0.9);
+    --clip: polygon(
+        0 0,
+        calc(100% - 12px) 0,
+        100% 12px,
+        100% 100%,
+        12px 100%,
+        0 calc(100% - 12px)
+    );
+    
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.2rem 3rem;
+    font-family: var(--font-code);
+    font-size: 1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: var(--primary);
+    background: var(--bg);
+    clip-path: var(--clip);
+    cursor: pointer;
+    text-decoration: none;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.cyber-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        135deg,
+        transparent 40%,
+        rgba(16, 185, 129, 0.1) 50%,
+        transparent 60%
+    );
+    background-size: 200% 200%;
+    animation: cyber-btn-shimmer 3s infinite linear;
+}
+
+@keyframes cyber-btn-shimmer {
+    0% { background-position: 200% 200%; }
+    100% { background-position: -200% -200%; }
+}
+
+/* Button Background */
+.cyber-btn__bg {
+    position: absolute;
+    inset: 2px;
+    background: linear-gradient(
+        180deg,
+        rgba(16, 185, 129, 0.05) 0%,
+        rgba(5, 16, 11, 0.95) 50%,
+        rgba(16, 185, 129, 0.1) 100%
+    );
+    clip-path: var(--clip);
+    z-index: -1;
+}
+
+/* Animated Borders */
+.cyber-btn__borders {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+.cyber-btn__borders span {
+    position: absolute;
+    background: var(--primary);
+}
+
+.cyber-btn__borders span:nth-child(1) {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    animation: cyber-border-top 2s infinite linear;
+    transform-origin: left;
+}
+
+.cyber-btn__borders span:nth-child(2) {
+    top: 0;
+    right: 0;
+    width: 2px;
+    height: 100%;
+    animation: cyber-border-right 2s infinite linear;
+    animation-delay: 0.5s;
+    transform-origin: top;
+}
+
+.cyber-btn__borders span:nth-child(3) {
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    height: 2px;
+    animation: cyber-border-bottom 2s infinite linear;
+    animation-delay: 1s;
+    transform-origin: right;
+}
+
+.cyber-btn__borders span:nth-child(4) {
+    bottom: 0;
+    left: 0;
+    width: 2px;
+    height: 100%;
+    animation: cyber-border-left 2s infinite linear;
+    animation-delay: 1.5s;
+    transform-origin: bottom;
+}
+
+@keyframes cyber-border-top {
+    0%, 100% { transform: scaleX(0); opacity: 0; }
+    10%, 90% { opacity: 1; }
+    50% { transform: scaleX(1); }
+}
+
+@keyframes cyber-border-right {
+    0%, 100% { transform: scaleY(0); opacity: 0; }
+    10%, 90% { opacity: 1; }
+    50% { transform: scaleY(1); }
+}
+
+@keyframes cyber-border-bottom {
+    0%, 100% { transform: scaleX(0); opacity: 0; }
+    10%, 90% { opacity: 1; }
+    50% { transform: scaleX(1); }
+}
+
+@keyframes cyber-border-left {
+    0%, 100% { transform: scaleY(0); opacity: 0; }
+    10%, 90% { opacity: 1; }
+    50% { transform: scaleY(1); }
+}
+
+/* Scanlines */
+.cyber-btn__scanlines {
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0, 0, 0, 0.15) 2px,
+        rgba(0, 0, 0, 0.15) 4px
+    );
+    pointer-events: none;
+    animation: cyber-scanlines 8s infinite linear;
+}
+
+@keyframes cyber-scanlines {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(4px); }
+}
+
+/* Noise Effect */
+.cyber-btn__noise {
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.08'/%3E%3C/svg%3E");
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+/* Glitch Text */
+.cyber-btn__glitch {
+    position: relative;
+    display: inline-block;
+    z-index: 1;
+}
+
+.cyber-btn__glitch::before,
+.cyber-btn__glitch::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+}
+
+.cyber-btn__glitch::before {
+    color: #ff0080;
+    animation: none;
+    opacity: 0;
+}
+
+.cyber-btn__glitch::after {
+    color: #00ffff;
+    animation: none;
+    opacity: 0;
+}
+
+@keyframes cyber-glitch-1 {
+    0%, 100% { opacity: 0; transform: translateX(0); }
+    5% { opacity: 0.8; transform: translateX(-5px) skewX(-5deg); clip-path: inset(20% 0 60% 0); }
+    6% { opacity: 0; }
+    35% { opacity: 0.6; transform: translateX(3px); clip-path: inset(70% 0 10% 0); }
+    36% { opacity: 0; }
+    65% { opacity: 0.7; transform: translateX(-4px); clip-path: inset(10% 0 70% 0); }
+    66% { opacity: 0; }
+}
+
+@keyframes cyber-glitch-2 {
+    0%, 100% { opacity: 0; transform: translateX(0); }
+    15% { opacity: 0.6; transform: translateX(4px) skewX(3deg); clip-path: inset(50% 0 30% 0); }
+    16% { opacity: 0; }
+    45% { opacity: 0.7; transform: translateX(-3px); clip-path: inset(15% 0 65% 0); }
+    46% { opacity: 0; }
+    75% { opacity: 0.5; transform: translateX(5px); clip-path: inset(60% 0 20% 0); }
+    76% { opacity: 0; }
+}
+
+/* Subtle glitch for hover only - much less distracting */
+@keyframes cyber-glitch-subtle {
+    0%, 100% { opacity: 0; transform: translateX(0); }
+    48% { opacity: 0; }
+    49% { opacity: 0.15; transform: translateX(1px); }
+    50% { opacity: 0; }
+    98% { opacity: 0; }
+    99% { opacity: 0.12; transform: translateX(-1px); }
+}
+
+/* Tag/Label */
+.cyber-btn__tag {
+    position: absolute;
+    bottom: -2px;
+    right: 4px;
+    font-size: 0.55rem;
+    font-weight: 400;
+    color: var(--bg-main);
+    background: var(--primary);
+    padding: 2px 6px;
+    letter-spacing: 1px;
+    clip-path: polygon(4px 0, 100% 0, 100% 100%, 0 100%);
+}
+
+/* Hover Effects */
+.cyber-btn:hover {
+    color: #fff;
+    text-shadow: 
+        0 0 10px var(--primary),
+        0 0 20px var(--primary),
+        0 0 40px var(--primary);
+    box-shadow:
+        0 0 20px rgba(16, 185, 129, 0.4),
+        inset 0 0 20px rgba(16, 185, 129, 0.1);
+}
+
+.cyber-btn:hover .cyber-btn__glitch::before,
+.cyber-btn:hover .cyber-btn__glitch::after {
+    animation: cyber-glitch-subtle 2s infinite;
+}
+
+.cyber-btn:hover .cyber-btn__borders span {
+    animation-duration: 0.5s;
+    background: #fff;
+    box-shadow: 0 0 10px var(--primary);
+}
+
+.cyber-btn:hover .cyber-btn__bg {
+    background: linear-gradient(
+        180deg,
+        rgba(16, 185, 129, 0.2) 0%,
+        rgba(5, 16, 11, 0.9) 50%,
+        rgba(16, 185, 129, 0.2) 100%
+    );
+}
+
+/* Active/Click Effect */
+.cyber-btn:active {
+    transform: scale(0.97);
+}
+
+.cyber-btn:active .cyber-btn__glitch::before,
+.cyber-btn:active .cyber-btn__glitch::after {
+    animation: none;
+    opacity: 0.8;
+    transform: translateX(0);
+}
+
+/* Corner Accents */
+.cyber-btn::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    width: 16px;
+    height: 16px;
+    border-top: 2px solid var(--secondary);
+    border-right: 2px solid var(--secondary);
+    clip-path: polygon(0 0, 100% 0, 100% 100%);
+    animation: cyber-corner-pulse 2s infinite ease-in-out;
+}
+
+@keyframes cyber-corner-pulse {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 1; }
+}
+
+/* Glow animation on idle */
+@keyframes cyber-btn-glow {
+    0%, 100% { 
+        box-shadow: 
+            0 0 5px rgba(16, 185, 129, 0.3),
+            inset 0 0 5px rgba(16, 185, 129, 0.05);
+    }
+    50% { 
+        box-shadow: 
+            0 0 20px rgba(16, 185, 129, 0.5),
+            0 0 40px rgba(16, 185, 129, 0.2),
+            inset 0 0 10px rgba(16, 185, 129, 0.1);
+    }
+}
+
+.cyber-btn {
+    animation: cyber-btn-glow 3s infinite ease-in-out;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    .cyber-btn {
+        padding: 1rem 2rem;
+        font-size: 0.9rem;
+        letter-spacing: 2px;
+    }
+    
+    .cyber-btn__tag {
+        font-size: 0.5rem;
+    }
 }
 
 .cta-group {
     display: flex;
     gap: 1.5rem;
     justify-content: center;
+    margin-top: 5rem;
 }
 
 .btn {
